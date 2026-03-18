@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MYSHOP KORAT - คุณกอล์ฟ</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Google Fonts (Kanit) -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * { box-sizing: border-box; font-family: 'Kanit', sans-serif; }
+        body { margin: 0; line-height: 1.6; color: #333; background-color: #fcfcfc; scroll-behavior: smooth; }
+        
+        /* Navigation Menu */
+        nav { background: #ffffff; padding: 1rem 0; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.08); }
+        nav .container { display: flex; justify-content: space-between; align-items: center; max-width: 1100px; margin: auto; padding: 0 20px; }
+        .logo h2 { margin: 0; color: #e67e22; font-weight: 600; cursor: pointer; }
+        
+        nav ul { list-style: none; display: flex; margin: 0; padding: 0; align-items: center; }
+        nav ul li { margin-left: 25px; }
+        nav ul li a { color: #444; text-decoration: none; font-weight: 400; transition: 0.3s; }
+        nav ul li a:hover { color: #e67e22; }
+
+        .cart-btn { position: relative; font-size: 1.3rem; color: #2c3e50; background: none; border: none; cursor: pointer; outline: none; }
+        .cart-count { position: absolute; top: -10px; right: -12px; background: #e74c3c; color: white; border-radius: 50%; padding: 2px 7px; font-size: 0.7rem; font-weight: bold; }
+
+        /* Section Global Styles */
+        section { padding: 80px 20px; max-width: 1100px; margin: auto; }
+        .section-title { text-align: center; margin-bottom: 50px; font-size: 2rem; }
+        .section-title span { color: #e67e22; border-bottom: 3px solid #e67e22; padding-bottom: 5px; }
+
+        /* Home Section */
+        .hero { 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+            url('https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200'); 
+            background-size: cover; background-position: center; color: white; text-align: center; padding: 140px 20px; 
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 15px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; }
+
+        /* Products Section */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+        .card { background: white; border-radius: 15px; overflow: hidden; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; border: 1px solid #eee; }
+        .card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .card .img-box { height: 350px; width: 100%; overflow: hidden; background: #f0f0f0; }
+        .card img { width: 100%; height: 100%; object-fit: cover; }
+        .card .info { padding: 20px; }
+        .card .price { color: #e67e22; font-weight: 600; font-size: 1.3rem; margin-bottom: 15px; }
+
+        /* Cart Modal */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); overflow-y: auto; }
+        .modal-content { background: white; margin: 5% auto; padding: 30px; border-radius: 15px; max-width: 600px; position: relative; width: 90%; }
+        .close-modal { position: absolute; right: 20px; top: 15px; font-size: 1.5rem; cursor: pointer; color: #999; }
+        
+        .cart-items-list { margin-top: 20px; }
+        .cart-item { display: flex; align-items: center; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+        .item-details { flex: 1; padding: 0 15px; }
+        .item-qty { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { background: #eee; border: none; width: 25px; height: 25px; border-radius: 5px; cursor: pointer; }
+        .cart-total { text-align: right; margin-top: 25px; font-size: 1.4rem; font-weight: 600; color: #e67e22; }
+        .checkout-btn { width: 100%; margin-top: 20px; }
+
+        /* Common Button */
+        .btn { display: inline-block; background: #e67e22; color: white; padding: 12px 30px; border: 2px solid #e67e22; border-radius: 50px; cursor: pointer; text-decoration: none; font-weight: 500; transition: 0.3s; }
+        .btn:hover { background: transparent; color: #e67e22; }
+
+        /* Contact Section */
+        .contact-flex { display: flex; flex-wrap: wrap; gap: 40px; }
+        .contact-form { flex: 1; min-width: 300px; background: white; padding: 35px; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .contact-info { flex: 1; min-width: 300px; }
+        .info-card { display: flex; align-items: center; margin-bottom: 25px; background: #fff; padding: 15px; border-radius: 10px; border-left: 5px solid #e67e22; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .info-card i { font-size: 1.5rem; color: #e67e22; margin-right: 20px; width: 30px; text-align: center; }
+        
+        input, textarea { width: 100%; padding: 12px; margin: 10px 0 20px; border: 1px solid #ddd; border-radius: 8px; outline: none; }
+        
+        footer { text-align: center; padding: 40px; background: #2c3e50; color: #bdc3c7; margin-top: 60px; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            nav .container { flex-direction: column; }
+            nav ul { margin-top: 15px; }
+            nav ul li { margin: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 1. NAVIGATION -->
+    <nav>
+        <div class="container">
+            <div class="logo" onclick="location.href='#home'"><h2>MYSHOP</h2></div>
+            <ul>
+                <li><a href="#home">หน้าแรก</a></li>
+                <li><a href="#about">เกี่ยวกับเรา</a></li>
+                <li><a href="#products">สินค้า</a></li>
+                <li><a href="#contact">ติดต่อเรา</a></li>
+                <li>
+                    <button class="cart-btn" onclick="toggleCart()">
+                        <i class="fas fa-shopping-basket"></i>
+                        <span class="cart-count" id="cart-count">0</span>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 2. HOME SECTION -->
+    <header id="home" class="hero">
+        <div class="container">
+            <h1>คุณภาพระดับพรีเมียม</h1>
+            <p>พบกับสินค้าคัดสรรพิเศษเพื่อชาวนครราชสีมา โดยคุณกอล์ฟ</p>
+            <a href="#products" class="btn">เริ่มช้อปปิ้ง <i class="fas fa-chevron-right"></i></a>
+        </div>
+    </header>
+
+    <!-- 3. ABOUT SECTION -->
+    <section id="about">
+        <h2 class="section-title"><span>เกี่ยวกับเรา</span></h2>
+        <div class="about-content">
+            <div class="about-img">
+                <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&q=80&w=600" alt="เกี่ยวกับเรา">
+            </div>
+            <div class="about-text">
+                <h3>ยินดีต้อนรับสู่ร้านค้าของคุณกอล์ฟ</h3>
+                <p>เราคือตัวแทนจำหน่ายสินค้าไลฟ์สไตล์และอุปกรณ์ไอทีคุณภาพสูง ที่เน้นความพึงพอใจของลูกค้าเป็นอันดับหนึ่ง สินค้าทุกชิ้นผ่านการตรวจสอบคุณภาพก่อนส่งถึงมือคุณ</p>
+                <p><strong>ทำไมต้องเลือกเรา?</strong><br>
+                ✅ สินค้าของแท้ 100%<br>
+                ✅ บริการส่งไวจากตัวเมืองโคราช<br>
+                ✅ ให้คำปรึกษาเป็นกันเองโดยคุณกอล์ฟโดยตรง</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. PRODUCTS SECTION -->
+    <section id="products">
+        <h2 class="section-title"><span>สินค้าแนะนำ</span></h2>
+        <div class="grid">
+            <div class="card">
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=500" alt="กระเป๋าสะพายหลังกันน้ำ">
+                </div>
+                <div class="info">
+                    <h3>กระเป๋าสะพายหลังกันน้ำ Tactical</h3>
+                    <p>ทนทาน กันน้ำ 100% เหมาะสำหรับทุกกิจกรรม</p>
+                    <p class="price">1,290.-</p>
+                    <button class="btn" onclick="addToCart('กระเป๋าสะพายหลัง Tactical', 1290, 'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=100')">
+                        <i class="fas fa-cart-plus"></i> ใส่ตะกร้า
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=500" alt="นาฬิกาอัจฉริยะ">
+                </div>
+                <div class="info">
+                    <h3>Smart Watch Edition</h3>
+                    <p>แจ้งเตือนครบ กันน้ำลึก 50 เมตร</p>
+                    <p class="price">2,500.-</p>
+                    <button class="btn" onclick="addToCart('Smart Watch Edition', 2500, 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&q=80&w=100')">
+                        <i class="fas fa-cart-plus"></i> ใส่ตะกร้า
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="img-box">
+                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=500" alt="หูฟังไร้สาย">
+                </div>
+                <div class="info">
+                    <h3>หูฟังไร้สาย Bass Pro</h3>
+                    <p>เสียงแน่น เบสหนัก แบตเตอรี่อึด</p>
+                    <p class="price">1,890.-</p>
+                    <button class="btn" onclick="addToCart('หูฟังไร้สาย Bass Pro', 1890, 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=100')">
+                        <i class="fas fa-cart-plus"></i> ใส่ตะกร้า
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CART MODAL -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="toggleCart()">&times;</span>
+            <h2 style="border-bottom: 2px solid #e67e22; padding-bottom: 10px;">ตะกร้าสินค้าของคุณ</h2>
+            <div id="cart-items-list" class="cart-items-list">
+                <!-- รายการสินค้าจะปรากฏที่นี่ -->
+            </div>
+            <div class="cart-total" id="cart-total">รวมทั้งหมด: 0.-</div>
+            <button class="btn checkout-btn" onclick="checkout()">สั่งซื้อสินค้า</button>
+        </div>
+    </div>
+
+    <!-- 5. CONTACT SECTION -->
+    <section id="contact">
+        <h2 class="section-title"><span>ติดต่อเรา</span></h2>
+        <div class="contact-flex">
+            <div class="contact-form">
+                <h3>ฝากข้อความถึงเรา</h3>
+                <form onsubmit="event.preventDefault(); alert('ขอบคุณที่ติดต่อเรา! เราจะตอบกลับโดยเร็วที่สุด');">
+                    <input type="text" placeholder="ชื่อของคุณ" required>
+                    <input type="email" placeholder="อีเมลติดต่อกลับ" required>
+                    <textarea rows="5" placeholder="คุณต้องการสอบถามเรื่องใด..."></textarea>
+                    <button type="submit" class="btn">ส่งข้อความ</button>
+                </form>
+            </div>
+            
+            <div class="contact-info">
+                <div class="info-card">
+                    <i class="fas fa-user"></i>
+                    <div><strong>ผู้ดูแลร้าน</strong><br>คุณกอล์ฟ (Golf)</div>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-phone-alt"></i>
+                    <div><strong>เบอร์โทรศัพท์</strong><br>096-867-2802</div>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-envelope"></i>
+                    <div><strong>อีเมล</strong><br>golfkung458901@gmail.com</div>
+                </div>
+                <div class="info-card">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <div><strong>ที่อยู่</strong><br>อำเภอเมือง จ.นครราชสีมา 30000</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2024 MYSHOP KORAT - Managed by Golf Kung. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let cart = [];
+
+        function addToCart(name, price, img) {
+            const existingItem = cart.find(item => item.name === name);
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ name, price, img, qty: 1 });
+            }
+            updateCartUI();
+            // แจ้งเตือนเล็กน้อย
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> เพิ่มแล้ว!';
+            btn.style.borderColor = '#27ae60';
+            btn.style.color = '#27ae60';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.borderColor = '#e67e22';
+                btn.style.color = 'white';
+            }, 1000);
+        }
+
+        function updateCartUI() {
+            const countEl = document.getElementById('cart-count');
+            const listEl = document.getElementById('cart-items-list');
+            const totalEl = document.getElementById('cart-total');
+            
+            let totalItems = 0;
+            let totalPrice = 0;
+            listEl.innerHTML = '';
+
+            if (cart.length === 0) {
+                listEl.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">ไม่มีสินค้าในตะกร้า</p>';
+            }
+
+            cart.forEach((item, index) => {
+                totalItems += item.qty;
+                totalPrice += item.price * item.qty;
+
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'cart-item';
+                itemDiv.innerHTML = `
+                    <img src="${item.img}" alt="${item.name}">
+                    <div class="item-details">
+                        <strong>${item.name}</strong><br>
+                        <span style="color:#e67e22;">${item.price.toLocaleString()}.-</span>
+                    </div>
+                    <div class="item-qty">
+                        <button class="qty-btn" onclick="changeQty(${index}, -1)">-</button>
+                        <span>${item.qty}</span>
+                        <button class="qty-btn" onclick="changeQty(${index}, 1)">+</button>
+                    </div>
+                    <div style="margin-left:15px; cursor:pointer; color:#e74c3c;" onclick="removeItem(${index})">
+                        <i class="fas fa-trash"></i>
+                    </div>
+                `;
+                listEl.appendChild(itemDiv);
+            });
+
+            countEl.innerText = totalItems;
+            totalEl.innerText = `รวมทั้งหมด: ${totalPrice.toLocaleString()}.-`;
+        }
+
+        function changeQty(index, delta) {
+            cart[index].qty += delta;
+            if (cart[index].qty < 1) {
+                removeItem(index);
+            } else {
+                updateCartUI();
+            }
+        }
+
+        function removeItem(index) {
+            cart.splice(index, 1);
+            updateCartUI();
+        }
+
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.style.display = (modal.style.display === 'block') ? 'none' : 'block';
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert('ตะกร้าว่างเปล่า กรุณาเลือกสินค้าก่อนครับ');
+                return;
+            }
+            alert('ระบบกำลังนำคุณไปยังหน้าชำระเงิน (ตัวอย่างระบบ)');
+            cart = [];
+            updateCartUI();
+            toggleCart();
+        }
+
+        // ปิด Modal เมื่อคลิกนอกหน้าต่าง
+        window.onclick = function(event) {
+            const modal = document.getElementById('cartModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
